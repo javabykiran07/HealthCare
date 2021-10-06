@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.aspectj.weaver.tools.Trace;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,12 +23,11 @@ public class Specialization {
 	@Id
 	@Column(name = "spec_id_col")
 	private Long id;
-	@Column(name = "specName_col")
+	@Column(name = "specName_col", length = 15, nullable = false, unique = true)
 	private String specName;
-	@Column(name = "specCode_col")
-	private String specCode ;
-	@Column(name = "specNote_col")
+	@Column(name = "specCode_col", length = 60, nullable = false, unique = true)
+	private String specCode;
+	@Column(name = "specNote_col", length = 250, nullable = false)
 	private String specNote;
-	
 
 }

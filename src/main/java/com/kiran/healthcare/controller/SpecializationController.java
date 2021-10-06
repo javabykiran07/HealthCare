@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kiran.healthcare.entity.Specialization;
 import com.kiran.healthcare.service.ISpecializationService;
@@ -35,13 +37,9 @@ public class SpecializationController {
 	 * on submit form save data
 	 */
 	@PostMapping("/save")
-	public String saveForm(
-			@ModelAttribute Specialization specialization,
-			Model model
-			)
-	{
+	public String saveForm(@ModelAttribute Specialization specialization, Model model) {
 		Long id = service.saveSpecialization(specialization);
-		String message ="Record ("+id+") is created";
+		String message = "Record (" + id + ") is created";
 		model.addAttribute("message", message);
 		return "SpecializationRegister";
 	}
@@ -50,9 +48,22 @@ public class SpecializationController {
 	 * display all
 	 */
 	@GetMapping("/all")
-	public String viewAll(Model model) {
+	public String viewAll(Model model, @RequestParam(value = "message", required = false) String message) {
 		List<Specialization> list = service.getAll();
 		model.addAttribute("list", list);
+		model.addAttribute("message", message);
 		return "SpecializationData";
 	}
+
+	/*
+	 * delete Specialization
+	 */
+	@GetMapping("/delete")
+	public String deleteData(@RequestParam Long id, RedirectAttributes attributes) {
+		service.removeSpecialization(id);
+		attributes.addAttribute("message", "Record (" + id + ") is deleted");
+		return "redirect:all";
+
+	}
+
 }
